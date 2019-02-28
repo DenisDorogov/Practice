@@ -1,0 +1,37 @@
+body {
+    font-family: 'sans‑serif';
+    width: 800px;
+    margin: 0 auto;
+}
+
+header {
+    
+    outline: 2px solid #ccc;
+    text-align: center;
+    
+}
+
+h1 {
+    line-height: 50px;
+    color: #555;
+}
+.container-main {
+    display: flex;
+}
+.math {
+    width: 200px;
+    min-height: 100px;
+    margin: 20px 10px;
+    border: 2px solid #ccc;
+    
+}
+.math h3 {
+    text-align: center;
+}
+
+.math p {
+    margin-left: 30px;
+    font-size: 1.25em;
+    font-weight: 700;
+}
+        

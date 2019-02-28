@@ -1,0 +1,56 @@
+body {
+    font-family: 'sans‑serif';
+    width: 800px;
+    margin: 0 auto;
+}
+
+header {
+    
+    outline: 2px solid #ccc;
+    text-align: center;
+    
+}
+
+h1 {
+    line-height: 50px;
+    color: #555;
+}
+.container-main {
+    display: flex;
+}
+.math {
+    min-width: 300px;
+    min-height: 100px;
+    margin: 20px 10px;
+    border: 4px solid #ccc;
+    margin: 0 auto;
+    box-shadow : 5px 5px 3px black;
+    border-style: outset;
+    border-radius: 10px;
+    
+}
+.math h3 {
+    text-align: center;
+}
+
+.math p {
+    margin-left: 30px;
+    font-size: 1.25em;
+    font-weight: 700;
+}
+
+#counter {
+    font-size: 10em;
+    font-family: Courier New;
+    text-align: right;
+    margin: 0px 50px;
+    color: blue;
+    
+}
+
+.button {
+    display: block;
+    margin: 30px auto;
+    height: 30px;
+    width: 100px;
+}
