@@ -118,14 +118,15 @@ function outputMain() {
     parent.appendChild(buttonCorrect);
     buttonCorrect.addEventListener('click', getQuestion)
   }
-//  if (getStorage('results') == undefined) {
-   let statistic = {lastResult: 'Прошлый результат отсутствует', mark: undefined}
-//  setStorage('results' , statistic);
-//  } else {
-    statistic = getStorage('results');
+    
+    statistic = getStorage('math');
+    statistic.countAttempts += 1;
     statistic.lastResult = mark;
-    setStorage('results' , statistic);
-//  }
+    statistic.averageResult =  (statistic.averageResult * (statistic.countAttempts - 1) + statistic.lastResult)/statistic.countAttempts;
+    statistic.lastDate = new Date();
+    statistic.message = 'Время решения';
+    setStorage('math' , statistic);
+
   
 }
 
@@ -138,7 +139,16 @@ function getStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
 
-
+if (localStorage.math == undefined) {
+  let math = { 
+    "countAttempts": 0,
+    "averageResult": 0, 
+    "lastResult": 0,
+    "lastDate": new Date()
+    "message": 'Время сброса'
+  };
+  setStorage('math', math);
+}
 
 for (var i = (minSum - 10); i < maxSum; i++) {
   for (var j = 1; j <= (maxSum - i); j++) {
