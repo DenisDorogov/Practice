@@ -14,7 +14,8 @@ let k = 0;
 var n = 0;
 var message = ['СУПЕР!!!', 'ОТЛИЧНО', 'ХОРОШО', 'ПОЙДЁТ'];
 var penalty = 0;
-
+let time = new Date();
+let storage = {};
 
 
 // Вывод результата в блок
@@ -43,8 +44,98 @@ parent.style.display= 'flex';
   }
 
 }
+function outputStat() {
+  let statistic = getStorage('math');
+  
+  let markAvg = statistic.averageResult;
+  let lastResult = statistic.lastResult;
+  let lastDate = statistic.lastDate;
+  let resetDate = statistic.resetTime;
+  let divMarkAvg = document.getElementById('markAvg');
+  let divLastResult = document.getElementById('lastResult');
+  let divLastDate = document.getElementById('lastDate');
+  let divResetDate = document.getElementById('resetDate');
+  console.log(lastDate);
+  //lastDate = Date.parse(lastDate);
+  //lastDate = `${lastDate.getDate()}. ${lastDate.getMonth()}`;
+  divMarkAvg.innerHTML = `Средняя оценка: ${markAvg}`;
+  divLastResult.innerHTML = `Последняя оценка: ${lastResult}`;
+  divLastDate.innerHTML = `Последняя проверка: ${lastDate}`;
+  divResetDate.innerHTML = `Время сброса: ${resetDate}`;
+};
+
+function numNames(num, unit) {
+  //console.log('num = ' + num);
+  //num = String(num);
+  switch(unit) {
+    case 'month':
+      switch(num) {
+        case 'Jan': return 'янв'; break;
+        case 'Feb': return 'фев'; break;
+        case 'Mar': return 'мар'; break;
+        case 'Apr': return 'апр'; break;
+        case 'May': return 'мая'; break;
+        case 'Jun': return 'июн'; break;
+        case 'Jul': return 'июл'; break;
+        case 'Aug': return 'авг'; break;
+        case 'Sep': return 'сен'; break;
+        case 'Oct': return 'окт'; break;
+        case 'Nov': return 'ноя'; break;
+        case 'Dec': return 'дек'; break;
+        default: unit; break;
+      }
+      break;
+
+      default: console.log('numNames: неправильно задан параметр'); break;
+  }
+  
+
+} ;
+
+
+function dateTransform(date, method) { //date = Fri Apr 03 2020 18:26:27 GMT+0500 (Екатеринбург, стандартное время)
+  //if (typeof (date) !== 'string') return console.log('dateTransform: date= '+ date + typeof date);
+  if (typeof(date) == 'undefined') return;
+  let hours;
+  let minutes;
+  let seconds;
+  //if (typeof(date) == 'object') date = date.toISOString();
+  
+    switch(method) {
+      case 'date': 
+        return  `${date.slice(8,10)} ${numNames(date.slice(4,7),'month')}`;
+        
+      break;
+
+      case 'time':
+        console.log('dateTransform time: ', date);
+        date = toString(date);
+
+        hours = date.slice(11,13);
+        minutes = date.slice(14,16);
+        seconds = date.slice(17,19);
+        date = '';
+        if (hours !== '00')  date = hours + ':';
+        return date + minutes + '.' + seconds;
+      break;
+
+      case 'duration':
+        date = Math.floor(date/1000);
+        seconds = date % 60;
+        minutes = (date-seconds) % 60;
+        hours = (date-minutes-seconds) % 60;
+        return `${hours}:${minutes}.${seconds}`;
+      break;
+      case undefined: return 'неопределено';
+
+      default: console.log('Неверный параметр: dateTransform: date: '+ date + ' method ' + method); break;  
+
+    }
+    
+}
 
 function getQuestion() {
+  if (startTime = 0) startTime = new Date();
   document.getElementById('results-block').innerHTML = '';
   var divMath = document.getElementById('main-block');
   divMath.innerHTML = `<form class="praxis-block" id = "praxis-block"><div class="praxis" id = "praxis">${questionArray[k][0]}</div><input type="text" autofocus class="answer" id="answer" ><div class="enter-answer" id="buttonAnswer" >ГОТОВО</div></form>`;
@@ -54,7 +145,7 @@ function getQuestion() {
   inputAnswer.addEventListener('keydown', function(event) {if ((event.keyCode == 13) || (event.keyCode == 9)) checkAnswer();});
 //  inputAnswer.focus();
  
-}
+};
 //function nextQuestion(example) {
 //  var parent = document.getElementById('praxis-block');
 //  var delElem = document.getElementById('praxis');
@@ -123,11 +214,13 @@ function outputMain() {
     statistic.countAttempts += 1;
     statistic.lastResult = mark;
     statistic.averageResult =  (statistic.averageResult * (statistic.countAttempts - 1) + statistic.lastResult)/statistic.countAttempts;
-    statistic.lastDate = new Date();
+    
     statistic.message = 'Время решения';
+    let stopTime = new Date();
+    console.log(stopTime.toString());
+    statistic.lastDate = dateTransform(stopTime.toString(), 'date');
+    statistic.time = dateTransform( stopTime - time , 'duration');
     setStorage('math' , statistic);
-
-  
 }
 
 function setStorage(key, object) {
@@ -139,14 +232,30 @@ function getStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
 
+
+//time = new Date();
+//console.log (time);
+//console.log (time.toString());
+//console.log (time.toDateString());
+
+//console.log (time.toISOString());
+
+//console.log (time.toUTCString());
+
+//console.log (time.toGMTString());
+
+
+
+////console.log (time.toTimeString());
+
+//console.dir (time.toUTCString());
+//console.log ('cnhjrf');
+
+
+
 if (localStorage.math == undefined) {
-  let math = { 
-    "countAttempts": 0,
-    "averageResult": 0, 
-    "lastResult": 0,
-    "lastDate": new Date()
-    "message": 'Время сброса'
-  };
+  let math = {"resetTime": undefined };
+  math.resetTime =  dateTransform((new Date()).toString(), 'date');
   setStorage('math', math);
 }
 
@@ -179,7 +288,7 @@ for (var i = 0; i < countMath; i++) {
   }
 }
 //getQuestion('main-block', questionArray[0]);
-
+outputStat();
 buttonAnswer = document.getElementById("button-start");
 //inputAnswer = document.getElementById("answer");
 buttonAnswer.addEventListener('click', getQuestion);
