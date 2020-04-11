@@ -41,23 +41,28 @@ h1 {
 
 .statistic {
     width: 100%;
-    background-color: #ddd;
+    height: 100px;
+    background-color: dimgray;
     margin: 0 auto;
-    padding: 20px 0px;
+    padding: 10px 0px 20px;
     display:flex;
+    flex-flow: column wrap;
     justify-content: space-around;
 
 
 }
 
 .statData {
-    height: 24px;
-    width: 170px;
+    height: 20px;
+    width: 320px;
+    margin: 0px 20px;
     padding-top: 6px;
     //background-color: #555;
-    text-align: center;
-    color:gray;
+    text-align: right;
+    color:silver;
     font-size: 18px;
+  font-weight: 600;
+    line-height: 25px;
 
 }
 

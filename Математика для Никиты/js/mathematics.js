@@ -10,12 +10,21 @@ let answerArray = [];
 let countCorrects = 0;
 let mistakes = 0;
 let mark = 0;
+let rectification = false;
 let k = 0;
 var n = 0;
-var message = ['СУПЕР!!!', 'ОТЛИЧНО', 'ХОРОШО', 'ПОЙДЁТ'];
+var message = ['СУПЕР!!!', 'ОТЛИЧНО', 'ХОРОШО', 'ПОЙДЁТ', 'ПЛОХО', 'УЖАСНО'];
 var penalty = 0;
-let time = new Date();
+let time = Date.now();
 let storage = {};
+let colors = [
+  [0, 'DarkRed', 6, 0],
+  [2.5, 'DarkOrange', 5, 0.5],
+  [3.5, 'Gold', 4, 0.6],
+  [4.5, 'Lime', 3, 0.7],
+  [5, 'DodgerBlue', 2, 0.8],
+  [5.5, 'DarkMagenta', 1, 0.9] 
+];
 
 
 // Вывод результата в блок
@@ -43,7 +52,21 @@ parent.style.display= 'flex';
     answerArray = [];
   }
 
+};
+
+function resultStyle(value, param = 0) {
+  for (let i = colors.length-1; i >= 0; i--) {
+    if(colors[i][param] <= value) {
+      return colors[i][1];
+    };
+  };
+};
+
+function showMark(result) {
+  let around = Math.round(result*2) 
 }
+
+
 function outputStat() {
   let statistic = getStorage('math');
   
@@ -51,17 +74,33 @@ function outputStat() {
   let lastResult = statistic.lastResult;
   let lastDate = statistic.lastDate;
   let resetDate = statistic.resetTime;
-  let divMarkAvg = document.getElementById('markAvg');
-  let divLastResult = document.getElementById('lastResult');
-  let divLastDate = document.getElementById('lastDate');
-  let divResetDate = document.getElementById('resetDate');
-  console.log(lastDate);
-  //lastDate = Date.parse(lastDate);
-  //lastDate = `${lastDate.getDate()}. ${lastDate.getMonth()}`;
-  divMarkAvg.innerHTML = `Средняя оценка: ${markAvg}`;
-  divLastResult.innerHTML = `Последняя оценка: ${lastResult}`;
-  divLastDate.innerHTML = `Последняя проверка: ${lastDate}`;
-  divResetDate.innerHTML = `Время сброса: ${resetDate}`;
+  let timeAttempt = statistic.time;
+  console.log(Date.now(time) - statistic.resetTime)
+  let countAVG = statistic.countAttempts/dateTransform( Date.now(time) - statistic.resetTime, 'days');
+  console.log(Date.now(time) - statistic.resetTime);
+  let divResultMarkAVG = document.getElementById('result-mark-avg');
+  let divResultMarkLast = document.getElementById('result-mark-last');
+  let divResultCountAVG = document.getElementById('result-count-AVG');
+  let divResultDateReset = document.getElementById('result-date-reset');
+  let divResultDateLast = document.getElementById('result-date-last');
+  let divResultTimeTesting = document.getElementById('result-time-testing');
+  
+  divResultMarkAVG.style.color = resultStyle(markAvg);
+  divResultMarkLast.style.color = resultStyle(lastResult);
+  divResultCountAVG.style.color = resultStyle(countAVG,3);
+
+  markAvg = Math.round(markAvg*100)/100;
+  resetDate = dateTransform(resetDate,'date');
+
+  lastDate = dateTransform(lastDate,'date') + dateTransform(lastDate,'time');
+  timeAttempt = dateTransform(timeAttempt,'time');
+
+  divResultMarkAVG.innerHTML = isNaN(markAvg) ? '' : `Средняя оценка: ${markAvg}`;
+  divResultMarkLast.innerHTML = !!lastResult ? `Последняя оценка: ${lastResult}` : '' ;
+  divResultCountAVG.innerHTML = !!countAVG ? `Среднее в день: ${countAVG}` : '';
+  divResultDateReset.innerHTML = `Время сброса: ${resetDate}`;
+  divResultDateLast.innerHTML = !!lastDate ? `Последняя проверка: ${lastDate}` : '';
+  divResultTimeTesting.innerHTML = !!timeAttempt ? `Последнее время: ${timeAttempt}` : '';
 };
 
 function numNames(num, unit) {
@@ -70,18 +109,18 @@ function numNames(num, unit) {
   switch(unit) {
     case 'month':
       switch(num) {
-        case 'Jan': return 'янв'; break;
-        case 'Feb': return 'фев'; break;
-        case 'Mar': return 'мар'; break;
-        case 'Apr': return 'апр'; break;
-        case 'May': return 'мая'; break;
-        case 'Jun': return 'июн'; break;
-        case 'Jul': return 'июл'; break;
-        case 'Aug': return 'авг'; break;
-        case 'Sep': return 'сен'; break;
-        case 'Oct': return 'окт'; break;
-        case 'Nov': return 'ноя'; break;
-        case 'Dec': return 'дек'; break;
+        case 1: return 'янв'; break;
+        case 2: return 'фев'; break;
+        case 3: return 'мар'; break;
+        case 4: return 'апр'; break;
+        case 5: return 'мая'; break;
+        case 6: return 'июн'; break;
+        case 7: return 'июл'; break;
+        case 8: return 'авг'; break;
+        case 9: return 'сен'; break;
+        case 10: return 'окт'; break;
+        case 11: return 'ноя'; break;
+        case 12: return 'дек'; break;
         default: unit; break;
       }
       break;
@@ -99,24 +138,19 @@ function dateTransform(date, method) { //date = Fri Apr 03 2020 18:26:27 GMT+050
   let hours;
   let minutes;
   let seconds;
-  //if (typeof(date) == 'object') date = date.toISOString();
-  
+  let days;
+  let month;
     switch(method) {
       case 'date': 
-        return  `${date.slice(8,10)} ${numNames(date.slice(4,7),'month')}`;
+        date = new Date(date);
+        return  `${date.getDate()} ${numNames(date.getMonth() + 1,'month')}`;
         
       break;
 
       case 'time':
-        console.log('dateTransform time: ', date);
-        date = toString(date);
-
-        hours = date.slice(11,13);
-        minutes = date.slice(14,16);
-        seconds = date.slice(17,19);
-        date = '';
-        if (hours !== '00')  date = hours + ':';
-        return date + minutes + '.' + seconds;
+        //console.log('dateTransform time: ', date);
+        date = new Date(date);
+        return date.getUTCHours() + ':' + date.getUTCMinutes() + '.' + date.getUTCSeconds();
       break;
 
       case 'duration':
@@ -126,6 +160,13 @@ function dateTransform(date, method) { //date = Fri Apr 03 2020 18:26:27 GMT+050
         hours = (date-minutes-seconds) % 60;
         return `${hours}:${minutes}.${seconds}`;
       break;
+
+      case 'days':
+        date < 86400000 ? days = 1 :days = Math.floor(date/86400000);
+        return days;
+      break;
+
+
       case undefined: return 'неопределено';
 
       default: console.log('Неверный параметр: dateTransform: date: '+ date + ' method ' + method); break;  
@@ -135,14 +176,13 @@ function dateTransform(date, method) { //date = Fri Apr 03 2020 18:26:27 GMT+050
 }
 
 function getQuestion() {
-  if (startTime = 0) startTime = new Date();
   document.getElementById('results-block').innerHTML = '';
   var divMath = document.getElementById('main-block');
-  divMath.innerHTML = `<form class="praxis-block" id = "praxis-block"><div class="praxis" id = "praxis">${questionArray[k][0]}</div><input type="text" autofocus class="answer" id="answer" ><div class="enter-answer" id="buttonAnswer" >ГОТОВО</div></form>`;
+  divMath.innerHTML = `<form class="praxis-block" id = "praxis-block"><div class="praxis" id = "praxis">${questionArray[k][0]}</div><input type="text" autofocus class="answer" id="answer" ><div class="enter-answer" id="buttonAnswer" >ГОТОВО</div></form><div class="progress"><progress class="progress-line" max="${countMath}" value="${k+1}"></progress><h2 class="progress-digit">${k+1}/${countMath}</h2></div>`;
   buttonAnswer = document.getElementById("buttonAnswer");
   buttonAnswer.addEventListener('click', checkAnswer);
   inputAnswer = document.getElementById("answer");
-  inputAnswer.addEventListener('keydown', function(event) {if ((event.keyCode == 13) || (event.keyCode == 9)) checkAnswer();});
+  inputAnswer.addEventListener('keydown', function(event) {if ((event.keyCode == 13)/* || (event.keyCode == 9)*/) checkAnswer();});
 //  inputAnswer.focus();
  
 };
@@ -190,17 +230,29 @@ function checkAnswer() {
 function outputMain() {
   
   let text = '';
+  let color;
   mistakes += countMath - countCorrects;
-  if (mistakes == 0) {mark = 6 - penalty; text = message[0+penalty];}
-  else if (mistakes <= 2) {mark = 5 - penalty; text = message[1+penalty];}
-  else if (mistakes <= 4) {mark = 4 - penalty; text = message[2+penalty];}
-  else if (mistakes <= 6) {mark = 3 - penalty; text = message[3+penalty];}
-  else mark = 2;
+  if (!rectification) {
+    mark = 6 - mistakes/2;
+    text = message[12 - mark*2];
+    for (let i = colors.length - 1; i >= 0 ; i--) {
+      if (colors[i][2] > mistakes) {
+        color = colors[i][1];
+        i = -1;
+      };  
+    };
+  };
+//  if (mistakes == 0) {mark = 6 - penalty; text = message[0+penalty];}
+//  else if (mistakes <= 2) {mark = 5 - penalty; text = message[1+penalty];}
+//  else if (mistakes <= 4) {mark = 4 - penalty; text = message[2+penalty];}
+//  else if (mistakes <= 6) {mark = 3 - penalty; text = message[3+penalty];}
+//  else mark = 2;
   var parent = document.getElementById('main-block');
   var elem = document.createElement("div");
-  parent.innerHTML = `<div class="mark${mark} result"><h1 id="mark-text">${text}</h1></div><p id= "mark-result-text">Правильных ответов ${countCorrects} из ${countMath}</p>`;
+  parent.innerHTML = `<div class="mark${Math.floor(mark)} result"><h1 id="mark-text" style="color: ${color}">${text}</h1></div><p id= "mark-result-text">Правильных ответов ${countCorrects} из ${countMath}</p>`;
   if (mistakes > 0) {
-    penalty += 1; 
+    penalty += 1;
+    rectification = true; //режим исправления ошибок. В статистику не идёт.
     questionArray = answerArray.filter( right => right[3] == false);
     k = questionArray.length;
     let buttonCorrect = document.createElement('div');
@@ -216,10 +268,10 @@ function outputMain() {
     statistic.averageResult =  (statistic.averageResult * (statistic.countAttempts - 1) + statistic.lastResult)/statistic.countAttempts;
     
     statistic.message = 'Время решения';
-    let stopTime = new Date();
-    console.log(stopTime.toString());
-    statistic.lastDate = dateTransform(stopTime.toString(), 'date');
-    statistic.time = dateTransform( stopTime - time , 'duration');
+    let stopTime = Date.now();
+    //console.log(stopTime.toString());
+    statistic.lastDate = stopTime;
+    statistic.time = stopTime - time;
     setStorage('math' , statistic);
 }
 
@@ -255,7 +307,7 @@ function getStorage(key) {
 
 if (localStorage.math == undefined) {
   let math = {"resetTime": undefined };
-  math.resetTime =  dateTransform((new Date()).toString(), 'date');
+  math.resetTime =  Date.now();
   setStorage('math', math);
 }
 
