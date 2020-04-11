@@ -1,4 +1,4 @@
-var countMath = 3;
+var countMath = 40;
 var minSum = 20;
 var maxSum = 100;
 var difMax = 99;

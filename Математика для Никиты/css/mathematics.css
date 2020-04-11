@@ -139,6 +139,31 @@ h1 {
     box-shadow: none;
 }
 
+.progress {
+    display: flex;
+}
+.progress-line {
+    width: 100%;
+    margin: 40px 0px 20px;
+    /* color: red; */
+    display:inline-block;
+	width:100%;
+	height:20px;
+	padding:15px 0 0 0;
+	/*margin:0;*/
+	background:none;
+	border: 0;
+	border-radius: 15px;
+	text-align: left;
+	position:relative;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+}
+
+/*.progress-line>div {
+    background-color: green;
+}*/
+
 
 .results-block {
     display: none;
