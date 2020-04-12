@@ -94,7 +94,7 @@ function outputStat() {
   markAvg = Math.round(markAvg*100)/100;
   resetDate = dateTransform(resetDate,'date');
 
-  lastDate = dateTransform(lastDate,'date') + dateTransform(lastDate,'time');
+  lastDate = dateTransform(lastDate,'date') + ' ' + dateTransform(lastDate,'time');
   timeAttempt = dateTransform(timeAttempt,'time');
 
   divResultMarkAVG.innerHTML = isNaN(markAvg) ? '' : `Средняя оценка: ${markAvg}`;
@@ -152,7 +152,7 @@ function dateTransform(date, method) { //date = Fri Apr 03 2020 18:26:27 GMT+050
       case 'time':
         //console.log('dateTransform time: ', date);
         date = new Date(date);
-        return date.getUTCHours() + ':' + date.getUTCMinutes() + '.' + date.getUTCSeconds();
+        return date.getUTCHours() + ':' + date.getUTCMinutes() /*+ '.' + date.getUTCSeconds()*/;
       break;
 
       case 'duration':
