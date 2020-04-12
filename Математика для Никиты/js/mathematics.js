@@ -1,4 +1,4 @@
-var countMath = 40;
+var countMath = 4;
 var minSum = 20;
 var maxSum = 100;
 var difMax = 99;
@@ -13,17 +13,17 @@ let mark = 0;
 let rectification = false;
 let k = 0;
 var n = 0;
-var message = ['СУПЕР!!!', 'ОТЛИЧНО', 'ХОРОШО', 'ПОЙДЁТ', 'ПЛОХО', 'УЖАСНО'];
+var message = ['ОТЛИЧНО', 'ХОРОШО', 'ПОЙДЁТ', 'ПЛОХО', 'УЖАСНО'];
 var penalty = 0;
 let time = Date.now();
 let storage = {};
-let colors = [
-  [0, 'DarkRed', 6, 0],
-  [2.5, 'DarkOrange', 5, 0.5],
-  [3.5, 'Gold', 4, 0.6],
-  [4.5, '#70c81a', 3, 0.7],
-  [5, '#00cbb0', 2, 0.8],
-  [5.5, 'MediumOrchid', 1, 0.9] 
+let marks = [
+  [0,    'DarkRed',      6, '2',  'ЖУТЬ',    0  ],
+  [2.5,  'DarkOrange',   5, '3',  'УЖАСНО',  0.5],
+  [3.5,  'Gold',         4, '4-', 'ПЛОХО',   0.6],
+  [4,    '#70c81a',      3, '4',  'ПОЙДЁТ',  0.7],
+  [4.25, '#00cbb0',      2, '5-', 'ХОРОШО',  0.8],
+  [4.75, 'MediumOrchid', 1, '5',  'ОТЛИЧНО', 0.9] 
 ];
 
 
@@ -57,10 +57,10 @@ parent.style.display= 'flex';
 
 };
 
-function resultStyle(value, param = 0) {
-  for (let i = colors.length-1; i >= 0; i--) {
-    if(colors[i][param] <= value) {
-      return colors[i][1];
+function resultStyle(value, param = 0, item = 1) {
+  for (let i = marks.length-1; i >= 0; i--) {
+    if(marks[i][param] <= value) {
+      return marks[i][item];
     };
   };
 };
@@ -78,9 +78,8 @@ function outputStat() {
   let lastDate = statistic.lastDate;
   let resetDate = statistic.resetTime;
   let timeAttempt = statistic.time;
-  console.log(Date.now(time) - statistic.resetTime)
   let countAVG = statistic.countAttempts/dateTransform( Date.now(time) - statistic.resetTime, 'days');
-  console.log(Date.now(time) - statistic.resetTime);
+
   let divResultMarkAVG = document.getElementById('result-mark-avg');
   let divResultMarkLast = document.getElementById('result-mark-last');
   let divResultCountAVG = document.getElementById('result-count-AVG');
@@ -90,7 +89,7 @@ function outputStat() {
   
   divResultMarkAVG.style.color = resultStyle(markAvg);
   divResultMarkLast.style.color = resultStyle(lastResult);
-  divResultCountAVG.style.color = resultStyle(countAVG,3);
+  divResultCountAVG.style.color = resultStyle(countAVG,5);
 
   markAvg = Math.round(markAvg*100)/100;
   resetDate = dateTransform(resetDate,'date');
@@ -99,7 +98,7 @@ function outputStat() {
   timeAttempt = dateTransform(timeAttempt,'time');
 
   divResultMarkAVG.innerHTML = isNaN(markAvg) ? '' : `Средняя оценка: ${markAvg}`;
-  divResultMarkLast.innerHTML = !!lastResult ? `Последняя оценка: ${lastResult}` : '' ;
+  divResultMarkLast.innerHTML = !!lastResult ? `Последняя оценка: ${resultStyle(lastResult,0, 3)}` : '' ;
   divResultCountAVG.innerHTML = !!countAVG ? `Среднее в день: ${countAVG}` : '';
   divResultDateReset.innerHTML = `Время сброса: ${resetDate}`;
   divResultDateLast.innerHTML = !!lastDate ? `Последняя проверка: ${lastDate}` : '';
@@ -217,11 +216,13 @@ function outputMain() {
   let color;
   mistakes += countMath - countCorrects;
   if (!rectification) {
-    mark = 6 - mistakes/2;
-    text = message[12 - mark*2];
-    for (let i = colors.length - 1; i >= 0 ; i--) {
-      if (colors[i][2] > mistakes) {
-        color = colors[i][1];
+    //mark = 5 - mistakes/2;
+    //text = message[10 - mark*2];
+    for (let i = marks.length - 1; i >= 0 ; i--) {
+      if (marks[i][2] > mistakes) {
+        mark = marks[i][0] 
+        color = marks[i][1];
+        text = marks[i][4]
         i = -1;
       };  
     };
@@ -231,7 +232,13 @@ function outputMain() {
   parent.innerHTML = `<div class="mark${Math.floor(mark)} result"><h1 id="mark-text" style="color: ${color}">${text}</h1></div><p id= "mark-result-text">Правильных ответов ${countCorrects} из ${countMath}</p>`;
   
     statistic = getStorage('math');
-    statistic.countAttempts += 1;
+    if (statistic.countAttempts == undefined) {
+      statistic.countAttempts = 1;
+      statistic.averageResult = 0;
+    } else {
+      statistic.countAttempts += 1;
+    }
+    console.log('statistic.countAttempts: ' + statistic.countAttempts);
     statistic.lastResult = mark;
     statistic.averageResult =  (statistic.averageResult * (statistic.countAttempts - 1) + statistic.lastResult)/statistic.countAttempts;
     statistic.message = 'Время решения';
