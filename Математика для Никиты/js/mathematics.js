@@ -50,7 +50,10 @@ parent.style.display= 'flex';
     countMath = questionArray.length;
     countCorrects = 0;
     answerArray = [];
-  }
+  } else { 
+    outputStat()
+  };
+  
 
 };
 
@@ -182,8 +185,11 @@ function getQuestion() {
   buttonAnswer = document.getElementById("buttonAnswer");
   buttonAnswer.addEventListener('click', checkAnswer);
   inputAnswer = document.getElementById("answer");
-  inputAnswer.addEventListener('keydown', function(event) {if ((event.keyCode == 13)/* || (event.keyCode == 9)*/) checkAnswer();});
-//  inputAnswer.focus();
+  //inputAnswer.addEventListener('keydown', function(event) {if (event.keyCode == 13) checkAnswer();});
+  formAnswer = document.getElementById('praxis-block');
+  //document.body.appendChild(formAnswer);
+  formAnswer.addEventListener('submit', checkAnswer);
+  inputAnswer.focus();
  
 };
 
@@ -232,8 +238,8 @@ function outputMain() {
     let stopTime = Date.now();
     statistic.lastDate = stopTime;
     statistic.time = stopTime - time;
-    setStorage('math' , statistic);
-    outputStat();
+    //setStorage('math' , statistic);
+    
   };
 
   if (rectification) {
@@ -252,6 +258,8 @@ function outputMain() {
     parent.appendChild(buttonCorrect);
     buttonCorrect.addEventListener('click', getQuestion)
   };
+
+  if (countMath == countCorrects) setStorage('math' , statistic);
   
 }
 
