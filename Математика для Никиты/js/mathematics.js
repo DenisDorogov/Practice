@@ -21,9 +21,9 @@ let colors = [
   [0, 'DarkRed', 6, 0],
   [2.5, 'DarkOrange', 5, 0.5],
   [3.5, 'Gold', 4, 0.6],
-  [4.5, 'Lime', 3, 0.7],
-  [5, 'DodgerBlue', 2, 0.8],
-  [5.5, 'DarkMagenta', 1, 0.9] 
+  [4.5, '#70c81a', 3, 0.7],
+  [5, '#00cbb0', 2, 0.8],
+  [5.5, 'MediumOrchid', 1, 0.9] 
 ];
 
 
@@ -186,27 +186,6 @@ function getQuestion() {
 //  inputAnswer.focus();
  
 };
-//function nextQuestion(example) {
-//  var parent = document.getElementById('praxis-block');
-//  var delElem = document.getElementById('praxis');
-//  var insElem = document.createElement("div");
-////  console.log(delElem);
-//  insElem.setAttribute('class', 'praxis');
-//  insElem.setAttribute('id', 'praxis');
-//  insElem.innerHTML = `${example}`;
-////  parent.appendChild(insElem);
-//  parent.removeChild(delElem);
-//  parent.insertBefore(insElem, parent.firstChild);
-  
-//  var delElem = document.getElementById('answer');
-//  var insElem = document.createElement("input");
-//  insElem.setAttribute('type', 'text');
-//  insElem.setAttribute('class', 'answer');
-//  insElem.setAttribute('id', 'answer');
-//  insElem.setAttribute('autofocus', '');
-//  parent.removeChild(delElem);
-//  parent.insertBefore(insElem, parent.firstChild)
-// }
 
 function checkAnswer() {
   let answerValue = +(document.getElementById("answer").value);
@@ -224,7 +203,6 @@ function checkAnswer() {
     outputMain();
     outputResults();
   }
-    
 }
 
 function outputMain() {
@@ -241,15 +219,28 @@ function outputMain() {
         i = -1;
       };  
     };
-  };
-//  if (mistakes == 0) {mark = 6 - penalty; text = message[0+penalty];}
-//  else if (mistakes <= 2) {mark = 5 - penalty; text = message[1+penalty];}
-//  else if (mistakes <= 4) {mark = 4 - penalty; text = message[2+penalty];}
-//  else if (mistakes <= 6) {mark = 3 - penalty; text = message[3+penalty];}
-//  else mark = 2;
+  
   var parent = document.getElementById('main-block');
   var elem = document.createElement("div");
   parent.innerHTML = `<div class="mark${Math.floor(mark)} result"><h1 id="mark-text" style="color: ${color}">${text}</h1></div><p id= "mark-result-text">Правильных ответов ${countCorrects} из ${countMath}</p>`;
+  
+    statistic = getStorage('math');
+    statistic.countAttempts += 1;
+    statistic.lastResult = mark;
+    statistic.averageResult =  (statistic.averageResult * (statistic.countAttempts - 1) + statistic.lastResult)/statistic.countAttempts;
+    statistic.message = 'Время решения';
+    let stopTime = Date.now();
+    statistic.lastDate = stopTime;
+    statistic.time = stopTime - time;
+    setStorage('math' , statistic);
+    outputStat();
+  };
+
+  if (rectification) {
+    var parent = document.getElementById('main-block');
+    parent.innerHTML = `<p id= "mark-result-text">Правильных ответов ${countCorrects} из ${countMath}</p>`;
+  }
+  
   if (mistakes > 0) {
     penalty += 1;
     rectification = true; //режим исправления ошибок. В статистику не идёт.
@@ -260,19 +251,8 @@ function outputMain() {
     buttonCorrect.innerHTML = `<h2 class = "button-correct-text">ИСПРАВИТЬ</h2>`
     parent.appendChild(buttonCorrect);
     buttonCorrect.addEventListener('click', getQuestion)
-  }
-    
-    statistic = getStorage('math');
-    statistic.countAttempts += 1;
-    statistic.lastResult = mark;
-    statistic.averageResult =  (statistic.averageResult * (statistic.countAttempts - 1) + statistic.lastResult)/statistic.countAttempts;
-    
-    statistic.message = 'Время решения';
-    let stopTime = Date.now();
-    //console.log(stopTime.toString());
-    statistic.lastDate = stopTime;
-    statistic.time = stopTime - time;
-    setStorage('math' , statistic);
+  };
+  
 }
 
 function setStorage(key, object) {
@@ -283,27 +263,6 @@ function setStorage(key, object) {
 function getStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
-
-
-//time = new Date();
-//console.log (time);
-//console.log (time.toString());
-//console.log (time.toDateString());
-
-//console.log (time.toISOString());
-
-//console.log (time.toUTCString());
-
-//console.log (time.toGMTString());
-
-
-
-////console.log (time.toTimeString());
-
-//console.dir (time.toUTCString());
-//console.log ('cnhjrf');
-
-
 
 if (localStorage.math == undefined) {
   let math = {"resetTime": undefined };
