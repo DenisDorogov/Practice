@@ -1,4 +1,4 @@
-var countMath = 4;
+var countMath = 40;
 var minSum = 20;
 var maxSum = 100;
 var difMax = 99;
@@ -194,6 +194,10 @@ function getQuestion() {
 
 function checkAnswer() {
   let answerValue = +(document.getElementById("answer").value);
+  if (answerValue == 0) { 
+    alert ('Введите значение');
+    //getQuestion();
+  } else {
   if (answerValue == questionArray[k][1]) {
     countCorrects++;
     answerArray.push([questionArray[k][0], questionArray[k][1], answerValue, true]);
@@ -203,6 +207,7 @@ function checkAnswer() {
   console.log(answerArray[k][1],answerArray[k][3]);
   document.getElementById("answer").value = '';
   k++;
+};
   if (k < countMath) getQuestion();
   else {
     outputMain();
