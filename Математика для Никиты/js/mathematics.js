@@ -194,8 +194,8 @@ function getQuestion() {
 
 function checkAnswer() {
   let answerValue = +(document.getElementById("answer").value);
-  if (answerValue == 0) { 
-    alert ('Введите значение');
+  if (answerValue == 0 || typeof(answerValue) == 'string') { 
+    alert ('Введите число');
     //getQuestion();
   } else {
   if (answerValue == questionArray[k][1]) {
