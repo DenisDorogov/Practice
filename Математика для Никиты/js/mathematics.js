@@ -184,12 +184,9 @@ function getQuestion() {
   buttonAnswer = document.getElementById("buttonAnswer");
   buttonAnswer.addEventListener('click', checkAnswer);
   inputAnswer = document.getElementById("answer");
-  //inputAnswer.addEventListener('keydown', function(event) {if (event.keyCode == 13) checkAnswer();});
   formAnswer = document.getElementById('praxis-block');
-  //document.body.appendChild(formAnswer);
   formAnswer.addEventListener('submit', checkAnswer);
-  inputAnswer.focus();
- 
+  inputAnswer.focus();//sdsfsdf
 };
 
 function checkAnswer() {
