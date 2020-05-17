@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statictic</title>
+</head>
+<body>
+    <h2>Подкидываем монеты:</h2> 
+
+    <script>
+        let count = 1000; //Введи сюда количество попыток
+        let cnt = count;
+        let chain = 1;
+        let maxCount = 0;
+        let previos =  Math.round( Math.random());
+        let countOne = 0;
+        while (count > 0 ) {
+            let num = Math.round( Math.random());
+            document.writeln( num );
+            count--;
+            
+            if (num == 1) countOne++;
+
+            if (num == previos) {
+                chain++
+            } else if( chain > maxCount) {
+                maxCount = chain;
+                chain = 1
+            } else {
+                chain = 1;
+            }
+
+            previos = num;
+        }
+        document.write(`<h3>Размер выборки: ${cnt} </h3>`);
+        document.write(`<h3>Максимальная последовательность одинаковых: ${maxCount} </h3>`);
+        document.write(`<h3>Количество единиц: ${countOne} Процент выпадения: ${Math.round(countOne*1000/cnt)/10} </h3>`);
+    </script>
+
+</body>
+</html>
