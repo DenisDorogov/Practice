@@ -1,0 +1,263 @@
+body {
+    font-family: 'sans‑serif';
+    width: 800px;
+    margin: 0 auto;
+}
+
+header {
+
+    outline: 2px solid #ccc;
+    text-align: center;
+
+}
+
+h1 {
+    line-height: 50px;
+    color: #555;
+}
+
+.container-main {
+    display: flex;
+    flex-direction: column;
+}
+
+.math {
+    width: 200px;
+    min-height: 100px;
+    margin: 20px 10px;
+    border: 2px solid #ccc;
+
+}
+
+.math h3 {
+    text-align: center;
+}
+
+.math p {
+    margin-left: 30px;
+    font-size: 1.25em;
+    font-weight: 700;
+}
+
+.statistic {
+    width: 100%;
+    height: 100px;
+    background-color: dimgray;
+    margin: 0 auto;
+    padding: 10px 0px 20px;
+    display:flex;
+    flex-flow: column wrap;
+    justify-content: space-around;
+
+
+}
+
+.statData {
+    height: 20px;
+    width: 320px;
+    margin: 0px 20px;
+    padding-top: 6px;
+    //background-color: #555;
+    text-align: right;
+    color:silver;
+    font-size: 18px;
+  font-weight: 600;
+    line-height: 25px;
+
+}
+
+.main-block {
+    margin: 10px auto;
+    
+    width: 720px;
+    padding: 40px;
+    background-color: #ddd;
+}
+
+#button-start {
+    height: 50px;
+    padding: 20px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 50px;
+    line-height: 56px;
+    background-color: green;
+    /*  font-family: 'arial';*/
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0px 0px 2px 5px #bbb;
+}
+
+#button-start:hover {
+    color: #ddd;
+
+}
+
+#button-start:active {
+    background-color: green;
+    box-shadow: none;
+}
+
+
+.praxis-block {
+    margin: 0 auto;
+    display: flex;
+}
+
+
+.praxis {
+    font-size: 50px;
+    line-height: 66px;
+    margin-left: 81px;
+}
+
+.answer {
+    width: 100px;
+    font-size: 50px;
+    line-height: 56px;
+    font-family: 'sans‑serif';
+    padding: 0 10px;
+}
+
+.enter-answer {
+    background-color: forestgreen;
+    margin-left: 40px;
+    border-radius: 40px;
+    padding: 15px 20px;
+    font-size: 30px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0px 0px 2px 5px #bbb;
+}
+
+.enter-answer:hover {
+    color: #ddd;
+}
+
+.enter-answer:active {
+    background-color: green;
+    box-shadow: none;
+}
+
+.progress {
+    display: flex;
+}
+.progress-line {
+    width: 100%;
+    margin: 40px 0px 20px;
+    /* color: red; */
+    display:inline-block;
+	width:100%;
+	height:20px;
+	padding:15px 0 0 0;
+	/*margin:0;*/
+	background:none;
+	border: 0;
+	border-radius: 15px;
+	text-align: left;
+	position:relative;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 0.8em;
+}
+
+/*.progress-line>div {
+    background-color: green;
+}*/
+
+
+.results-block {
+    display: none;
+    flex-flow: column wrap;
+    max-height: 400px;
+    background-color: #ddd;
+}
+
+.result-block p {
+    color: green;
+}
+
+.result-espression {
+    margin: 10px 0 10px 43px;
+    background-color: white;
+    width: 94px;
+    padding-left: 10px;
+}
+
+.result {
+    height: 299px;
+    width: 300px;
+    padding-top: 1px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 50px;
+    line-height: 56px;
+    border-radius: 150px;
+    box-shadow: 0px 0px 4px 5px black;
+    vertical-align: middle;
+}
+
+.mark6 {
+    box-shadow: 0px 0px 15px 22px green;
+    background-color: gold;
+}
+
+.mark5 {
+    background-color: gold;
+}
+
+.mark4 {
+    background-color: silver;
+}
+
+.mark3 {
+    background-color: #cd7f32;
+}
+
+.mark2 {
+    display: none;
+}
+
+#mark-text {
+    margin-top: 130px;
+    font-size: 42px;
+    color: black;
+}
+
+#mark-result-text {
+    font-size: 20px;
+    text-align: center;
+    color: #555;
+}
+
+.mistake {
+    color: red;
+}
+
+.green {
+    color: green;
+}
+#button-correct {
+    background-color: forestgreen;
+    color: #0832bd;
+    margin: 0 auto;
+    width: 157px;
+    border-radius: 40px;
+    padding: 0px 20px;
+    font-size: 17px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0px 0px 2px 5px #bbb;
+}
+
+#button-correct:hover {
+    color: #ddd;
+}
+
+#button-correct:active {
+    background-color: green;
+    box-shadow: none;
+}
+
+.button-correct-text {
+  margin: 0;
+}
