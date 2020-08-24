@@ -1,4 +1,4 @@
-var multiplicand = 2;
+var multiplicand = 4;
 var countMath = (multiplicand - 1) * 10;
 var minSum = 20;
 var maxSum = 100;
@@ -288,7 +288,8 @@ if (localStorage.math == undefined) {
   setStorage('math', math);
 }
 
-for (var i = 2; i <= multiplicand; i++) {
+for (var i = multiplicand-3; i <= multiplicand; i++) {
+    if (i < 2) continue;
   for (var j = 1; j <= 10; j++) {
     multArray[n++] = [i + " x " + j + " = ", i * j];
   }
