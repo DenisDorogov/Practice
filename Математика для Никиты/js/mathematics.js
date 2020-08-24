@@ -3,7 +3,7 @@ var minSum = 20;
 var maxSum = 100;
 var difMax = 99;
 var difMin = 11;
-var sumArray = [];
+var multArray = [];
 var difArray = [];
 var questionArray = [];
 let answerArray = [];
@@ -289,7 +289,7 @@ if (localStorage.math == undefined) {
 
 for (var i = (minSum - 10); i < maxSum; i++) {
   for (var j = 1; j <= (maxSum - i); j++) {
-    sumArray[n++] = [i + " + " + j + " = ", i + j];
+    multArray[n++] = [i + " + " + j + " = ", i + j];
   }
 }
 
@@ -302,9 +302,9 @@ for (var i = difMin; i <= difMax; i++) {
 
 for (var i = 0; i < countMath; i++) {
   if (Math.floor(Math.random() * 2) == 1) {
-    var n = Math.floor(Math.random() * sumArray.length);
-    questionArray.push(sumArray[n]);
-    var out = sumArray.splice(n, 1);
+    var n = Math.floor(Math.random() * multArray.length);
+    questionArray.push(multArray[n]);
+    var out = multArray.splice(n, 1);
   } else {
     var n = Math.floor(Math.random() * difArray.length);
     if (difArray.length > 0) {
