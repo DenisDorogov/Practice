@@ -97,7 +97,7 @@ h1 {
     background-color: #ddd;
 }
 
-#button-start {
+.button-start {
     height: 50px;
     padding: 20px;
     width: 75%;

@@ -17,5 +17,3 @@ class Storehouse {
         return JSON.parse(localStorage.getItem(key));
     };
 };
-
-let storehouse = new Storehouse();
