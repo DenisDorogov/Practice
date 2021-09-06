@@ -21,25 +21,20 @@ class Interface {
                 break;
 
             case 'b-summ-diff':
-                alert(action);
+                examples = new Engine('b-summ-diff', this.difficulty);
                 break;
 
             case 'b-mult':
-                alert(action);
+                examples = new Engine('b-mult', this.difficulty);
                 break;
 
             case 'b-div':
-                alert(action);
+                examples = new Engine('b-div', this.difficulty);
                 break;
 
             case 'b-mult-div':
-                alert(action);
+                examples = new Engine('b-mult-div', this.difficulty);
                 break;
-
-            case 'summ':
-                alert(action);
-                break;
-
 
             default:
                 alert('Case Interface ');

@@ -11,27 +11,21 @@ class Engine {
         switch (type) {
             case 'b-summ':
                 this.examples = this.generateSumm(difficulty)
-                console.log(this.examples);
                 break;
             case 'b-diff':
                 this.examples = this.generateDiff(difficulty)
-                console.log(this.examples);
                 break;
             case 'b-summ-diff':
                 this.examples = this.generateSummDiff(difficulty)
-                console.log(this.examples);
                 break;
             case 'b-mult':
                 this.examples = this.generateMult(difficulty)
-                console.log(this.examples);
                 break;
             case 'b-div':
                 this.examples = this.generateDiv(difficulty)
-                console.log(this.examples);
                 break;
             case 'b-mult-div':
-                this.examples = this.generateMultDiff(difficulty)
-                console.log(this.examples);
+                this.examples = this.generateMultDiv(difficulty)
                 break;
 
             default:
@@ -48,6 +42,7 @@ class Engine {
             n = Math.floor(Math.random() * length);
             resultArray.push(array[n]);
             out = array.splice(n, 1);
+            length--;
         }
         return resultArray;
     }
@@ -68,7 +63,7 @@ class Engine {
                 this.allExamples.push(example);
             }
         }
-        return this.cutCount(this.allExamples);
+        return this.cutCount(this.allExamples, DIFFICULTY['summ'][difficulty].count);
     }
 
     generateDiff(difficulty = 'easy') {
@@ -86,8 +81,58 @@ class Engine {
                 this.allExamples.push(example);
             };
         };
-        console.log(this.allExamples); //debug
-        return this.cutCount(this.allExamples);
+        return this.cutCount(this.allExamples, DIFFICULTY['diff'][difficulty].count);
+    }
+
+    generateMult(difficulty = 'easy') {
+        let example;
+        let r;
+        for (let a = DIFFICULTY['mult'][difficulty].end; a > DIFFICULTY['mult'][difficulty].start; a--) {
+            for (let b = 10; b > 0; b--) {
+                r = a * b;
+                example = {
+                    'example': a + ' x ' + b + ' =',
+                    'answer': r,
+                    'userAnswer': undefined,
+                    'userResult': false
+                };
+
+                this.allExamples.push(example);
+            };
+        };
+        return this.cutCount(this.allExamples, DIFFICULTY['mult'][difficulty].count);
+    }
+
+    generateDiv(difficulty = 'easy') {
+        let example;
+        let r;
+        for (let a = DIFFICULTY['div'][difficulty].end; a > DIFFICULTY['div'][difficulty].start; a--) {
+            for (let b = 10; b > 0; b--) {
+                r = a * b;
+                example = {
+                    'example': r + ' / ' + a + ' =',
+                    'answer': b,
+                    'userAnswer': undefined,
+                    'userResult': false
+                };
+                this.allExamples.push(example);
+            };
+        };
+        return this.cutCount(this.allExamples, DIFFICULTY['div'][difficulty].count);
+    }
+
+    generateSummDiff(difficulty = 'easy') {
+        let middleware;
+        middleware = this.generateSumm(difficulty);
+        this.allExamples = middleware.concat(this.generateDiff(difficulty));
+        return this.cutCount(this.allExamples, DIFFICULTY['summ'][difficulty].count)
+    }
+
+    generateMultDiv(difficulty = 'easy') {
+        let middleware;
+        middleware = this.generateMult(difficulty);
+        this.allExamples = middleware.concat(this.generateDiv(difficulty));
+        return this.cutCount(this.allExamples, DIFFICULTY['mult'][difficulty].count)
     }
 
 
