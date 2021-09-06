@@ -21,8 +21,8 @@ const MARKS = [
 ];
 
 const DIFFICULTY = {
-  "summ": {"hard": {"start": 20 ,"end": 100}, "easy": {"start": 2 ,"end": 20}},
-  "diff": {"hard": {"start": 20 ,"end": 100}, "easy": {"start": 2 ,"end": 20}},
-  "mult": {"hard": {"start": 6 ,"end": 10}, "easy": {"start": 2 ,"end": 5}},
-  "div": {"hard": {"start": 6 ,"end": 10}, "easy": {"start": 2 ,"end": 5}}
+  "summ": {"hard": {"start": 20 ,"end": 100, "count": 40}, "easy": {"start": 2 ,"end": 20, "count": 20}},
+  "diff": {"hard": {"start": 20 ,"end": 100, "count": 40}, "easy": {"start": 2 ,"end": 20, "count": 20}},
+  "mult": {"hard": {"start": 6 ,"end": 10, "count": 40}, "easy": {"start": 2 ,"end": 5, "count": 20}},
+  "div": {"hard": {"start": 6 ,"end": 10, "count": 40}, "easy": {"start": 2 ,"end": 5, "count": 20}}
 };
